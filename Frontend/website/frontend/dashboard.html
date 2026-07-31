@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Hospital Admin Dashboard</title>
+  <link rel="stylesheet" href="css/dash.css" />
+  <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+</head>
+<body>
+  <div class="sidebar">
+    <h2>Easy Meds</h2>
+    <ul>
+      <a href="dashboard.html" class="active">Dashboard</a>
+      <a href="details.html">Patient Details</a>
+      <a href="doctor.html">Doctors</a>
+      <a href="clinics.html">Clinics</a>
+    </ul>
+  </div>
+
+  <div class="main-content">
+    <header>
+      <h1>Dashboard</h1>
+      <div class="profile">Parth Chaturvedi</div>
+    </header>
+
+    <!-- Dashboard Stats -->
+    <section class="stats">
+      <div class="card">Total Patients: 2,301</div>
+      <div class="card">Total Doctors: 401</div>
+      <div class="card">Total Clinics: 21</div>
+    </section>
+
+    <!-- Track Request Form -->
+    <section class="track-form" id="track-request">
+      <h2>Enter Request ID</h2>
+      <form id="track-form">
+        <label for="request-id">Request ID:</label>
+        <input type="text" id="request-id" name="request_id" required />
+        <button type="submit">Track Request</button>
+      </form>
+    </section>
+
+    <!-- Track Request Status -->
+    <section class="request-status">
+      <h2>Request Status</h2>
+      <p id="status-message">Enter your request ID to track the status.</p>
+    </section>
+  </div>
+
+  <script>
+    document.getElementById('track-form').addEventListener('submit', function(event) {
+      event.preventDefault();
+  
+      const requestId = document.getElementById('request-id').value;
+  
+      fetch('/track-request', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        body: `request_id=${requestId}`,
+      })
+      .then(response => response.json())
+      .then(data => {
+        let statusMessage = '';
+        let pharmacistInfo = '';
+  
+        if (data.status === 'found') {
+          statusMessage = data.message;
+  
+          if (statusMessage.includes('status: processed')) {
+            pharmacistInfo = `
+              <h3>Pharmacist Details</h3>
+              <table border="1" cellpadding="8" cellspacing="0">
+                <thead>
+                  <tr>
+                    <th>Name</th>
+                    <th>Phone No</th>
+                    <th>Address</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>Rakesh</td>
+                    <td>+91 9001122334</td>
+                    <td>707 Health Park, Sector 5, Chennai - 224001</td>
+                  </tr>
+                </tbody>
+              </table>
+            `;
+          }
+        } else {
+          statusMessage = data.message;
+        }
+  
+        document.getElementById('status-message').innerHTML = statusMessage + pharmacistInfo;
+      })
+      .catch(error => {
+        console.error('Error:', error);
+        document.getElementById('status-message').innerHTML = 'An error occurred while tracking the request.';
+      });
+    });
+  </script>
+  
+</body>
+</html>

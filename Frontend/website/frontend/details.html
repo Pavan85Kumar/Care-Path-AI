@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Patient Details</title>
+    <link rel="stylesheet" href="css/details.css">
+    <script>
+        function togglePregnancyField() {
+            var gender = document.getElementById("gender").value;
+            var pregnancyField = document.getElementById("pregnancy-check");
+            
+            if (gender === "Female") {
+                pregnancyField.style.display = "block";
+            } else {
+                pregnancyField.style.display = "none";
+            }
+        }
+
+        // Function to display success message and request id if available
+        window.onload = function() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const message = urlParams.get('message');
+            const requestId = urlParams.get('requestId');
+            
+            if (message) {
+                document.getElementById('notification-message').textContent = `${message} (Request ID: ${requestId})`;
+                document.getElementById('notification-panel').style.display = 'block';
+            }
+        }
+
+        // Function to validate medicine input and show warning
+        function validateMedicines() {
+            const enteredMedicines = document.getElementById('enteredMedicines').value;
+            const warningMessage = document.getElementById('warning-message');
+
+            // If "others" is not entered and medicines are entered, show warning
+            if (enteredMedicines && !enteredMedicines.includes("others")) {
+                warningMessage.style.display = 'block';
+                return false;
+            } else {
+                warningMessage.style.display = 'none';
+                return true;
+            }
+        }
+
+    </script>
+</head>
+<body>
+    <!-- Notification Panel -->
+    <div id="notification-panel" class="notification-panel" style="display:none;">
+        <div id="notification-message">
+            <!-- Dynamic notification content will appear here -->
+        </div>
+        <button id="close-notification" onclick="closeNotification()">X</button>
+    </div>
+
+    <div class="sidebar">
+        <h2>Easy Meds</h2>
+        <ul>
+            <a href="dashboard.html">Dashboard</a>
+            <a href="details.html" class="active">Patient Details</a>
+            <a href="doctor.html">Doctors</a>
+            <a href="clinics.html">Clinics</a>
+        </ul>
+    </div>
+
+    <div class="main-content">
+        <header>
+            <h1>Enter Patient Details</h1>
+        </header>
+
+        <section class="patient-form">
+            <form action="/submit" method="POST" enctype="multipart/form-data" onsubmit="return validateMedicines()">
+                <label for="name">Name:</label>
+                <input type="text" id="name" name="name" required>
+                
+                <label for="age">Age:</label>
+                <input type="number" id="age" name="age" required>
+                
+                <label for="pincode">Pincode:</label>
+                <input type="text" id="pincode" name="pincode" required>
+                
+                <label for="gender">Gender:</label>
+                <select id="gender" name="gender" onchange="togglePregnancyField()" required>
+                    <option value="">Select</option>
+                    <option value="Male">Male</option>
+                    <option value="Female">Female</option>
+                    <option value="Other">Other</option>
+                </select>
+                
+                <div id="pregnancy-check" style="display: none;">
+                    <label for="pregnant">Are you pregnant?</label>
+                    <select id="pregnant" name="pregnant">
+                        <option value="No">No</option>
+                        <option value="Yes">Yes</option>
+                    </select>
+                </div>
+
+                <label for="prescription">Upload Prescription (Required):</label>
+                <input type="file" id="prescription" name="prescription" accept="image/*, .pdf" required>
+
+                <!-- Display Prescription Image after Upload -->
+                <div id="prescription-preview" style="display:none; margin-top: 10px;">
+                    <h3>Uploaded Prescription:</h3>
+                    <img id="prescription-img" src="" alt="Prescription Image" style="max-width: 300px; max-height: 300px; border: 1px solid #ccc; border-radius: 8px;">
+                </div>
+
+                <!-- For Pharmacist to add medicines -->
+                <div id="medicines-entry" style="display:none;">
+                    <label for="enteredMedicines">Enter Medicines (Pharmacist):</label>
+                    <input type="text" id="enteredMedicines" name="medicines" placeholder="e.g. Paracetamol, Ibuprofen">
+                    <p id="warning-message" style="color: red; display:none;">If the medicine is not listed, please include <strong>"others"</strong> for the pharmacist to read the prescription. Example: "Paracetamol, others".</p>
+                </div>
+
+                <button type="submit">Submit</button>
+            </form>
+        </section>
+    </div>
+
+    <script>
+        function closeNotification() {
+            document.getElementById('notification-panel').style.display = 'none';
+        }
+
+        // Preview uploaded prescription and allow pharmacist to enter medicines
+        document.getElementById('prescription').addEventListener('change', function(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const previewImg = document.getElementById('prescription-img');
+                    const previewContainer = document.getElementById('prescription-preview');
+                    previewImg.src = e.target.result;
+                    previewContainer.style.display = 'block';
+                    
+                    // Show pharmacist medicines entry section
+                    document.getElementById('medicines-entry').style.display = 'block';
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+    </script>
+</body>
+</html>

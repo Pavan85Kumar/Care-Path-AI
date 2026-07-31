@@ -1,0 +1,39 @@
+aushadhi-website/
+│── backend/                     # Backend files (Node.js + Express)
+│   ├── config/                   # Configurations (DB, JWT, etc.)
+│   │   ├── db.js                 # MongoDB connection
+│   │   ├── dotenv.js             # Load .env variables
+│   ├── controllers/              # Business logic & request handling
+│   │   ├── authController.js      # Signup/Login logic
+│   │   ├── medicineController.js  # Medicine-related APIs
+│   ├── middleware/               # Middleware (Auth, Validation, etc.)
+│   │   ├── authMiddleware.js      # JWT Authentication
+│   │   ├── errorHandler.js        # Error handling
+│   ├── models/                    # Mongoose Models
+│   │   ├── User.js                # User schema
+│   │   ├── Medicine.js            # Medicine schema
+│   ├── routes/                    # API Routes
+│   │   ├── authRoutes.js          # Signup/Login routes
+│   │   ├── medicineRoutes.js      # Medicine routes
+│   ├── utils/                     # Utility functions
+│   │   ├── generateToken.js       # JWT token generator
+│   ├── server.js                  # Main Express Server
+│   ├── .env                       # Environment variables
+│   ├── package.json               # Node.js dependencies
+│
+│── frontend/                     # Frontend files (HTML, CSS, JS)
+│   ├── assets/                    # Static assets (images, icons, etc.)
+│   ├── css/                       # CSS styles
+│   │   ├── styles.css             # Main styles
+│   ├── js/                        # JavaScript files
+│   │   ├── app.js                 # Main JS file
+│   │   ├── auth.js                # Authentication logic (login/signup)
+│   │   ├── medicine.js            # Fetch/display medicine data
+│   ├── index.html                 # Home page
+│   ├── login.html                 # Login page
+│   ├── signup.html                # Signup page
+│   ├── dashboard.html             # User dashboard
+│   ├── medicine.html              # Medicine list/search page
+│
+│── README.md                      # Project documentation
+│── .gitignore                      # Git ignore file

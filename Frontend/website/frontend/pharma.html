@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Requests - Pharmacist Dashboard</title>
+  <link rel="stylesheet" href="css/request.css">
+</head>
+<body>
+
+  <div class="sidebar">
+    <h2>Easy Meds</h2>
+    <ul>
+      <li><a href="pharma.html" class="active">Dashboard</a></li>
+    </ul>
+  </div>
+
+  <div class="main-content">
+    <header>
+      <h1>Pharmacist Dashboard</h1>
+      <div class="profile">Rakesh</div>
+    </header>
+
+    <!-- Requests Section -->
+    <section class="requests">
+      <h2>Pending Requests</h2>
+
+      <div class="request-list" id="requestList">
+        <!-- Request Items will be dynamically generated here -->
+      </div>
+
+      <div class="status" id="statusText">
+        All systems operational.
+      </div>
+    </section>
+  </div>
+
+  <script>
+    async function fetchRequests() {
+      try {
+        const response = await fetch('/requests');
+        const data = await response.json();
+
+        const requestListContainer = document.getElementById('requestList');
+        requestListContainer.innerHTML = '';
+
+        if (data && data.length > 0) {
+          data.forEach((request) => {
+            const requestItem = document.createElement('div');
+            requestItem.classList.add('request-item');
+
+            // If prescription is an image URL or base64 string
+            const prescriptionContent = request.prescription
+              ? `<img src="/uploads/${request.prescription}" alt="Prescription" class="prescription-image" />`
+              : `<em>No prescription uploaded.</em>`;
+
+            // Check if 'others' is present in medicines list and show warning
+            const medicines = request.medicines ? request.medicines.join(', ') : '';
+            const warningMessage = medicines.includes('others') 
+              ? '<div style="color: red; font-weight: bold;">Warning: The medicines list contains "others". Please review the prescription carefully.</div>' 
+              : '';
+
+            requestItem.innerHTML = `
+              <span><strong>Request ID:</strong> ${request.requestId}</span><br>
+              <span><strong>Name:</strong> ${request.name}</span><br>
+              <span><strong>Medicines:</strong> ${medicines}</span><br>
+              ${warningMessage}
+              <span><strong>Status:</strong> ${request.status}</span><br>
+              <div><strong>Prescription:</strong><br>${prescriptionContent}</div>
+              ${request.status === 'initiated' ? `<button onclick="processRequest('${request.requestId}')">Process</button>` : ''}
+            `;
+
+            requestListContainer.appendChild(requestItem);
+          });
+        } else {
+          const noRequests = document.createElement('div');
+          noRequests.textContent = 'No pending requests.';
+          requestListContainer.appendChild(noRequests);
+        }
+
+        document.getElementById('statusText').textContent = `${data.length} request(s) found.`;
+      } catch (error) {
+        console.error('Error fetching requests:', error);
+        document.getElementById('statusText').textContent = 'Error fetching request data.';
+      }
+    }
+
+    async function processRequest(requestId) {
+      try {
+        const response = await fetch('/process-request', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ requestId })
+        });
+
+        const data = await response.json();
+
+        if (data.status === 'success') {
+          alert(`Request ${requestId} processed successfully!`);
+          fetchRequests();
+        } else {
+          alert(`Failed to process request ${requestId}.`);
+        }
+      } catch (error) {
+        console.error('Error processing request:', error);
+        alert('Error processing request.');
+      }
+    }
+
+    window.onload = fetchRequests;
+  </script>
+
+  <style>
+    .prescription-image {
+      max-width: 300px;
+      max-height: 300px;
+      margin-top: 5px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+    }
+  </style>
+</body>
+</html>
