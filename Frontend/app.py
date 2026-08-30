@@ -36,7 +36,7 @@ lung_cancer_model = joblib.load(MODEL_DIR / "lung_cancer_model.sav")
 chronic_disease_model = joblib.load(MODEL_DIR / "chronic_model.sav")
 hepatitis_model = joblib.load(MODEL_DIR / "hepititisc_model.sav")
 liver_model = joblib.load(MODEL_DIR / "liver_model.sav")
-lung_cancer_model = joblib.load('models/lung_cancer_model.sav')
+breast_cancer_model = joblib.load(MODEL_DIR / "breast_cancer.sav")
 
 
 # sidebar
