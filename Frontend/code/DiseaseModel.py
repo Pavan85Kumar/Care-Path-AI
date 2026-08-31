@@ -1,5 +1,14 @@
 import xgboost as xgb
 import pandas as pd
+from pathlib import Path
+
+
+# Frontend folder
+BASE_DIR = Path(__file__).resolve().parent.parent
+
+# Frontend/data folder
+DATA_DIR = BASE_DIR / "data"
+
 
 class DiseaseModel:
 
@@ -8,7 +17,10 @@ class DiseaseModel:
         self.symptoms = None
         self.pred_disease = None
         self.model = xgb.XGBClassifier()
-        self.diseases = self.disease_list('data/dataset.csv')
+
+        self.diseases = self.disease_list(
+            DATA_DIR / "dataset.csv"
+        )
 
     def load_xgboost(self, model_path):
         self.model.load_model(model_path)
@@ -18,23 +30,40 @@ class DiseaseModel:
 
     def predict(self, X):
         self.symptoms = X
+
         disease_pred_idx = self.model.predict(self.symptoms)
-        self.pred_disease = self.diseases[disease_pred_idx].values[0]
-        disease_probability_array = self.model.predict_proba(self.symptoms)
-        disease_probability = disease_probability_array[0, disease_pred_idx[0]]
+
+        self.pred_disease = self.diseases[
+            disease_pred_idx
+        ].values[0]
+
+        disease_probability_array = self.model.predict_proba(
+            self.symptoms
+        )
+
+        disease_probability = disease_probability_array[
+            0,
+            disease_pred_idx[0]
+        ]
+
         return self.pred_disease, disease_probability
 
-    
     def describe_disease(self, disease_name):
 
         if disease_name not in self.diseases:
             return "That disease is not contemplated in this model"
-        
-        # Read disease dataframe
-        desc_df = pd.read_csv('data/symptom_Description.csv')
-        desc_df = desc_df.apply(lambda col: col.str.strip())
 
-        return desc_df[desc_df['Disease'] == disease_name]['Description'].values[0]
+        desc_df = pd.read_csv(
+            DATA_DIR / "symptom_Description.csv"
+        )
+
+        desc_df = desc_df.apply(
+            lambda col: col.str.strip()
+        )
+
+        return desc_df[
+            desc_df['Disease'] == disease_name
+        ]['Description'].values[0]
 
     def describe_predicted_disease(self):
 
@@ -42,17 +71,25 @@ class DiseaseModel:
             return "No predicted disease yet"
 
         return self.describe_disease(self.pred_disease)
-    
+
     def disease_precautions(self, disease_name):
 
         if disease_name not in self.diseases:
             return "That disease is not contemplated in this model"
 
-        # Read precautions dataframe
-        prec_df = pd.read_csv('data/symptom_precaution.csv')
-        prec_df = prec_df.apply(lambda col: col.str.strip())
+        prec_df = pd.read_csv(
+            DATA_DIR / "symptom_precaution.csv"
+        )
 
-        return prec_df[prec_df['Disease'] == disease_name].filter(regex='Precaution').values.tolist()[0]
+        prec_df = prec_df.apply(
+            lambda col: col.str.strip()
+        )
+
+        return prec_df[
+            prec_df['Disease'] == disease_name
+        ].filter(
+            regex='Precaution'
+        ).values.tolist()[0]
 
     def predicted_disease_precautions(self):
 
@@ -63,14 +100,18 @@ class DiseaseModel:
 
     def disease_list(self, kaggle_dataset):
 
-        df = pd.read_csv('data/clean_dataset.tsv', sep='\t')
+        df = pd.read_csv(
+            DATA_DIR / "clean_dataset.tsv",
+            sep='\t'
+        )
+
         # Preprocessing
-        y_data = df.iloc[:,-1]
-        X_data = df.iloc[:,:-1]
+        y_data = df.iloc[:, -1]
+        X_data = df.iloc[:, :-1]
 
         self.all_symptoms = X_data.columns
 
-        # Convert y to categorical values
+        # Convert diseases to categorical values
         y_data = y_data.astype('category')
-        
+
         return y_data.cat.categories
