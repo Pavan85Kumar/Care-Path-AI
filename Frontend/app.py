@@ -199,7 +199,7 @@ if selected == 'Diabetes Prediction':
                 st.image(Image.open('positive.jpg'))
                 st.error(name + ", High risk based on symptoms. Get tested.")
             else:
-                st.image(Image.open('negative.jpg'))
+                st.image(Image.open(BASE_DIR / "negative.jpg"))
                 st.success(name + ", Low risk based on symptoms.")
         
         
