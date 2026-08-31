@@ -1,3 +1,9 @@
+from pathlib import Path
+import pandas as pd
+
+BASE_DIR = Path(__file__).resolve().parent.parent
+DATA_DIR = BASE_DIR / "data"
+
 import pandas as pd
 import numpy as np
 
@@ -11,7 +17,10 @@ def prepare_symptoms_array(symptoms):
     - X (np.array) = X values ready as input to ML model to get prediction
     '''
     symptoms_array = np.zeros((1,133))
-    df = pd.read_csv('data/clean_dataset.tsv', sep='\t')
+    df = pd.read_csv(
+    DATA_DIR / "clean_dataset.tsv",
+    sep="\t"
+)
     
     for symptom in symptoms:
         symptom_idx = df.columns.get_loc(symptom)
