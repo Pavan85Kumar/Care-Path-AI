@@ -1,3 +1,7 @@
+from pathlib import Path
+
+BASE_DIR = Path(__file__).resolve().parent
+
 import streamlit as st
 import plotly.express as px
 from plotly.subplots import make_subplots
@@ -72,7 +76,9 @@ if selected == 'Get Affordable Medicine':
 if selected == 'Disease Prediction': 
     # Create disease class and load ML model
     disease_model = DiseaseModel()
-    disease_model.load_xgboost('model/xgboost_model.json')
+    disease_model.load_xgboost(
+    BASE_DIR / "model" / "xgboost_model.json"
+)
 
     # Title
     st.write('# Disease Prediction using Machine Learning')
