@@ -146,7 +146,7 @@ if selected == 'Diabetes Prediction':
             prediction = diabetes_model.predict([[Pregnancies, Glucose, BloodPressure, SkinThickness, Insulin, BMI, DiabetesPedigreefunction, Age]])
 
             if prediction[0] == 1:
-                st.image(Image.open('positive.jpg'))
+                st.image(Image.open(BASE_DIR / "positive.jpg"))
                 st.error(name + ", High risk of Diabetes. Please consult a doctor.")
             else:
                 st.image(Image.open('negative.jpg'))
