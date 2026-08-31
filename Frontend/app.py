@@ -66,7 +66,7 @@ with st.sidebar:
 if selected == 'Get Affordable Medicine':
     st.title("🛒 Get Affordable Medicine")
     st.markdown(
-        '[🛒 Click here to open Get Affordable Medicine Page](http://localhost:3000/home.html)',
+        '[🛒 Click here to open Get Affordable Medicine Page](https://care-path-ai.onrender.com/)',
         unsafe_allow_html=True
     )
 
