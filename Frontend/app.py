@@ -149,7 +149,7 @@ if selected == 'Diabetes Prediction':
                 st.image(Image.open(BASE_DIR / "positive.jpg"))
                 st.error(name + ", High risk of Diabetes. Please consult a doctor.")
             else:
-                st.image(Image.open('negative.jpg'))
+                st.image(Image.open(BASE_DIR / "negative.jpg"))
                 st.success(name + ", Low risk of Diabetes.")
 
     # ------------------ SYMPTOM MODE ------------------
@@ -196,7 +196,7 @@ if selected == 'Diabetes Prediction':
             prediction = diabetes_model.predict([[preg, glucose, bp, skin, insulin, bmi, dpf, Age]])
 
             if prediction[0] == 1:
-                st.image(Image.open('positive.jpg'))
+                st.image(Image.open(BASE_DIR / "positive.jpg"))
                 st.error(name + ", High risk based on symptoms. Get tested.")
             else:
                 st.image(Image.open(BASE_DIR / "negative.jpg"))
@@ -209,7 +209,7 @@ if selected == 'Diabetes Prediction':
 # Heart prediction page
 if selected == 'Heart disease Prediction':
     st.title("Heart disease prediction")
-    image = Image.open('heart2.jpg')
+    image = Image.open(BASE_DIR / "heart2.jpg")
     st.image(image, caption='heart failure')
 
     name = st.text_input("Name:")
@@ -270,10 +270,10 @@ if selected == 'Heart disease Prediction':
             prediction = heart_model.predict([[age, sex, cp, trestbps, chol, fbs, restecg, thalach, exang, oldpeak, slope, ca, thal]])
 
             if prediction[0] == 1:
-                st.image(Image.open('positive.jpg'))
+                st.image(Image.open(BASE_DIR / "positive.jpg"))
                 st.error(name + ", High risk of Heart Disease.")
             else:
-                st.image(Image.open('negative.jpg'))
+                st.image(Image.open(BASE_DIR / "negative.jpg"))
                 st.success(name + ", Low risk of Heart Disease.")
 
     # ------------------ SYMPTOM MODE ------------------
@@ -329,10 +329,10 @@ if selected == 'Heart disease Prediction':
             prediction = heart_model.predict([[age, sex, cp, trestbps, chol, fbs, restecg, thalach, exang, oldpeak, slope, ca, thal]])
 
             if prediction[0] == 1:
-                st.image(Image.open('positive.jpg'))
+                st.image(Image.open(BASE_DIR / "positive.jpg"))
                 st.error(name + ", High risk based on symptoms. Get checked.")
             else:
-                st.image(Image.open('negative.jpg'))
+                st.image(Image.open(BASE_DIR / "negative.jpg"))
                 st.success(name + ", Low risk based on symptoms.")
 
 
@@ -345,7 +345,7 @@ if selected == 'Heart disease Prediction':
 
 if selected == 'Parkison Prediction':
     st.title("Parkison prediction")
-    image = Image.open('p1.jpg')
+    image = Image.open(BASE_DIR / "p1.jpg")
     st.image(image, caption='parkinsons disease')
   # parameters
 #    name	MDVP:Fo(Hz)	MDVP:Fhi(Hz)	MDVP:Flo(Hz)	MDVP:Jitter(%)	MDVP:Jitter(Abs)	MDVP:RAP	MDVP:PPQ	Jitter:DDP	MDVP:Shimmer	MDVP:Shimmer(dB)	Shimmer:APQ3	Shimmer:APQ5	MDVP:APQ	Shimmer:DDA	NHR	HNR	status	RPDE	DFA	spread1	spread2	D2	PPE
@@ -411,11 +411,11 @@ if selected == 'Parkison Prediction':
 
         if parkinson_prediction[0] == 1:
             parkinson_dig = 'we are really sorry to say but it seems like you have Parkinson disease'
-            image = Image.open('positive.jpg')
+            image = Image.open(BASE_DIR / "positive.jpg")
             st.image(image, caption='')
         else:
             parkinson_dig = "Congratulation , You don't have Parkinson disease"
-            image = Image.open('negative.jpg')
+            image = Image.open(BASE_DIR / "negative.jpg")
             st.image(image, caption='')
         st.success(name+' , ' + parkinson_dig)
 
@@ -432,7 +432,7 @@ lung_cancer_data['GENDER'] = lung_cancer_data['GENDER'].map({'M': 'Male', 'F': '
 # Lung Cancer prediction page
 if selected == 'Lung Cancer Prediction':
     st.title("Lung Cancer Prediction")
-    image = Image.open('h.png')
+    image = Image.open(BASE_DIR / "h.png")
     st.image(image, caption='Lung Cancer Prediction')
 
     # Columns
@@ -515,11 +515,11 @@ if selected == 'Lung Cancer Prediction':
         # Display result
         if cancer_prediction[0] == 'YES':
             cancer_result = "The model predicts that there is a risk of Lung Cancer."
-            image = Image.open('positive.jpg')
+            image = Image.open(BASE_DIR / "positive.jpg")
             st.image(image, caption='')
         else:
             cancer_result = "The model predicts no significant risk of Lung Cancer."
-            image = Image.open('negative.jpg')
+            image = Image.open(BASE_DIR / "negative.jpg")
             st.image(image, caption='')
 
         st.success(name + ', ' + cancer_result)
@@ -530,7 +530,7 @@ if selected == 'Lung Cancer Prediction':
 # Liver prediction page
 if selected == 'Liver prediction':  # pagetitle
     st.title("Liver disease prediction")
-    image = Image.open('liver.jpg')
+    image = Image.open(BASE_DIR / "liver.jpg")
     st.image(image, caption='Liver disease prediction.')
     # columns
     # no inputs from the user
@@ -576,11 +576,11 @@ if selected == 'Liver prediction':  # pagetitle
 
         # after the prediction is done if the value in the list at index is 0 is 1 then the person is diabetic
         if liver_prediction[0] == 1:
-            image = Image.open('positive.jpg')
+            image = Image.open(BASE_DIR / "positive.jpg")
             st.image(image, caption='')
             liver_dig = "we are really sorry to say but it seems like you have liver disease."
         else:
-            image = Image.open('negative.jpg')
+            image = Image.open(BASE_DIR / "negative.jpg")
             st.image(image, caption='')
             liver_dig = "Congratulation , You don't have liver disease."
         st.success(name+' , ' + liver_dig)
@@ -593,7 +593,7 @@ if selected == 'Liver prediction':  # pagetitle
 # Hepatitis prediction page
 if selected == 'Hepatitis prediction':
     st.title("Hepatitis Prediction")
-    image = Image.open('h.png')
+    image = Image.open(BASE_DIR / "h.png")
     st.image(image, caption='Hepatitis Prediction')
 
     st.info("This prediction requires lab test values. Please enter values from your medical report.")
@@ -641,10 +641,10 @@ if selected == 'Hepatitis prediction':
         prediction = hepatitis_model.predict(user_data)
 
         if prediction[0] == 1:
-            st.image(Image.open('positive.jpg'))
+            st.image(Image.open(BASE_DIR / "positive.jpg"))
             st.error(name + ", High risk of Hepatitis. Please consult a doctor.")
         else:
-            st.image(Image.open('negative.jpg'))
+            st.image(Image.open(BASE_DIR / "negative.jpg"))
             st.success(name + ", Low risk of Hepatitis.")
 
 
@@ -702,10 +702,10 @@ if selected == 'Chronic Kidney prediction':
             pred = chronic_disease_model.predict(df)
 
             if pred[0] == 1:
-                st.image(Image.open('positive.jpg'))
+                st.image(Image.open(BASE_DIR / "positive.jpg"))
                 st.error(name + ", High risk of Kidney Disease.")
             else:
-                st.image(Image.open('negative.jpg'))
+                st.image(Image.open(BASE_DIR / "negative.jpg"))
                 st.success(name + ", Low risk of Kidney Disease.")
 
     # ------------------ SYMPTOM MODE (NO ML) ------------------
@@ -722,10 +722,10 @@ if selected == 'Chronic Kidney prediction':
 
         if st.button("Check Risk"):
             if score >= 3:
-                st.image(Image.open('positive.jpg'))
+                st.image(Image.open(BASE_DIR / "positive.jpg"))
                 st.warning(name + ", Possible risk. Please consult doctor.")
             else:
-                st.image(Image.open('negative.jpg'))
+                st.image(Image.open(BASE_DIR / "negative.jpg"))
                 st.success(name + ", Low symptom-based risk.")
 
 
