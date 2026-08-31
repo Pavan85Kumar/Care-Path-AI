@@ -23,8 +23,8 @@ class DiseaseModel:
         )
 
     def load_xgboost(self, model_path):
-        self.model.load_model(model_path)
-
+        self.model.load_model(str(model_path))
+                              
     def save_xgboost(self, model_path):
         self.model.save_model(model_path)
 
