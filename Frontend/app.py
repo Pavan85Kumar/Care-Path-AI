@@ -111,7 +111,7 @@ if selected == 'Disease Prediction':
 # Diabetes prediction page
 if selected == 'Diabetes Prediction':
     st.title("Diabetes disease prediction")
-    image = Image.open('d3.jpg')
+    image = Image.open(BASE_DIR / "d3.jpg")
     st.image(image, caption='diabetes disease prediction')
 
     name = st.text_input("Name:")
